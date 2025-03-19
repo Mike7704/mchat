@@ -1,4 +1,5 @@
 import { ClerkProvider } from "@clerk/nextjs";
+import "@/styles/normalise.css";
 import "@/styles/globals.css";
 
 export const metadata = {
@@ -8,7 +9,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider afterMultiSessionSingleSignOutUrl="/" afterSignOutUrl="/">
       <html lang="en">
         <body suppressHydrationWarning={true}>{children}</body>
       </html>
