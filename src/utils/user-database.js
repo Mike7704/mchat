@@ -5,7 +5,7 @@ import { sql } from "@vercel/postgres";
 export async function addUser(id, username, email) {
   try {
     await sql`
-      INSERT INTO users (id, username, email)
+      INSERT INTO users_mchat (id, username, email)
       VALUES (${id}, ${username}, ${email})
       ON CONFLICT (id) DO NOTHING;
     `;
@@ -18,7 +18,7 @@ export async function addUser(id, username, email) {
 export async function updateUser(id, username, email) {
   try {
     await sql`
-      UPDATE users 
+      UPDATE users_mchat 
       SET username = ${username}, email = ${email} 
       WHERE id = ${id};
     `;
@@ -31,7 +31,7 @@ export async function updateUser(id, username, email) {
 export async function deleteUser(id) {
   try {
     await sql`
-      DELETE FROM users WHERE id = ${id};
+      DELETE FROM users_mchat WHERE id = ${id};
     `;
   } catch (error) {
     console.error("Error deleting user:", error);
