@@ -3,6 +3,7 @@ import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SearchBar from "@/components/SearchBar";
 
 export default function Dashboard() {
   const { user } = useUser();
@@ -19,6 +20,10 @@ export default function Dashboard() {
           )}
           <h3>Username: {user?.username}</h3>
           <p>Email: {user?.primaryEmailAddress?.emailAddress}</p>
+        </div>
+        <div>
+          <h3>Search for a user:</h3>
+          <SearchBar />
         </div>
       </main>
       <Footer />

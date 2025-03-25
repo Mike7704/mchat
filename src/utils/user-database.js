@@ -37,3 +37,20 @@ export async function deleteUser(id) {
     console.error("Error deleting user:", error);
   }
 }
+
+// Search for a user from the database
+export async function searchUsers(query) {
+  try {
+    const result = await sql`
+      SELECT id, username, email 
+      FROM users_mchat 
+      WHERE username ILIKE ${"%" + query + "%"} 
+      OR email ILIKE ${"%" + query + "%"}
+      LIMIT 10;
+    `;
+    return result.rows;
+  } catch (error) {
+    console.error("Database error:", error);
+    throw new Error("Database error");
+  }
+}
