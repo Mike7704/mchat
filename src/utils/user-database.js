@@ -39,18 +39,38 @@ export async function deleteUser(id) {
 }
 
 // Search for a user from the database
-export async function searchUsers(query) {
+export async function searchUsers(query, currentUserId) {
   try {
-    const result = await sql`
-      SELECT id, username, email 
-      FROM users_mchat 
+    const users = await sql`
+      SELECT id, username, email FROM users_mchat 
       WHERE username ILIKE ${"%" + query + "%"} 
-      OR email ILIKE ${"%" + query + "%"}
+      AND id != ${currentUserId}
       LIMIT 10;
     `;
-    return result.rows;
+    return users.rows;
   } catch (error) {
-    console.error("Database error:", error);
+    console.error("Error searching users:", error);
+    throw new Error("Database error");
+  }
+}
+
+// Send a friend request to a user
+export async function sendFriendRequest(senderId, receiverId) {
+  try {
+    const result = await sql`
+      INSERT INTO friends_mchat (sender_id, receiver_id, status)
+      VALUES (${senderId}, ${receiverId}, 'pending')
+      ON CONFLICT (sender_id, receiver_id) DO NOTHING
+      RETURNING *;
+    `;
+
+    if (result.rowCount === 0) {
+      return { message: "Friend request already sent!" };
+    }
+
+    return { message: "Friend request sent successfully!" };
+  } catch (error) {
+    console.error("Error sending friend request:", error);
     throw new Error("Database error");
   }
 }

@@ -1,13 +1,17 @@
 "use client";
 import { useState } from "react";
+import UserCard from "@/components/UserCard";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [searching, setSearching] = useState(false);
 
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;
+
+    setSearching(true);
 
     try {
       const response = await fetch(`/api/search-users?query=${query}`);
@@ -20,6 +24,8 @@ export default function SearchBar() {
       }
     } catch (error) {
       console.error("Network error:", error);
+    } finally {
+      setSearching(false);
     }
   };
 
@@ -32,24 +38,15 @@ export default function SearchBar() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <button type="submit">Search</button>
+        <button type="submit" disabled={searching}>
+          {searching ? "Searching..." : "Search"}
+        </button>
       </form>
 
       <div>
-        {results.length > 0 ? (
-          results.map((user) => (
-            <div key={user.id}>
-              <p>
-                <strong>Username:</strong> {user.username}
-              </p>
-              <p>
-                <strong>Email:</strong> {user.email}
-              </p>
-            </div>
-          ))
-        ) : (
-          <p>No users found.</p>
-        )}
+        {searching && <p>Searching...</p>}
+        {!searching && results.length > 0 && results.map((user) => <UserCard key={user.id} user={user} />)}
+        {!searching && results.length === 0 && query && <p>No users found.</p>}
       </div>
     </div>
   );
