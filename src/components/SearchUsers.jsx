@@ -6,12 +6,14 @@ export default function SearchBar() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;
 
     setSearching(true);
+    setHasSearched(true);
 
     try {
       const response = await fetch(`/api/search-users?query=${query}`);
@@ -46,7 +48,7 @@ export default function SearchBar() {
       <div>
         {searching && <p>Searching...</p>}
         {!searching && results.length > 0 && results.map((user) => <UserCard key={user.id} user={user} />)}
-        {!searching && results.length === 0 && query && <p>No users found.</p>}
+        {!searching && results.length === 0 && hasSearched && <p>No users found.</p>}
       </div>
     </div>
   );

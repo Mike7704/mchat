@@ -6,7 +6,7 @@ export default function UserCard({ user }) {
 
   const sendFriendRequest = async () => {
     try {
-      const response = await fetch("/api/send-friend-request", {
+      const response = await fetch("/api/friend-requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ receiverId: user.id }),

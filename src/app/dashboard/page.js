@@ -4,6 +4,8 @@ import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SearchUsers from "@/components/SearchUsers";
+import FriendRequests from "@/components/FriendRequests";
+import FriendsList from "@/components/FriendsList";
 
 export default function Dashboard() {
   const { user } = useUser();
@@ -24,6 +26,8 @@ export default function Dashboard() {
         <div>
           <h3>Search for a user:</h3>
           <SearchUsers />
+          <FriendRequests />
+          <FriendsList />
         </div>
       </main>
       <Footer />
