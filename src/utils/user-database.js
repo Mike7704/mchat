@@ -42,11 +42,20 @@ export async function deleteUser(id) {
 export async function searchUsers(query, currentUserId) {
   try {
     const users = await sql`
-      SELECT id, username, email FROM users_mchat 
-      WHERE username ILIKE ${"%" + query + "%"} 
-      AND id != ${currentUserId}
+      SELECT 
+        u.id, 
+        u.username, 
+        u.email, 
+        f.status AS friendship_status
+      FROM users_mchat u
+      LEFT JOIN friends_mchat f 
+        ON (f.sender_id = u.id AND f.receiver_id = ${currentUserId}) 
+        OR (f.receiver_id = u.id AND f.sender_id = ${currentUserId})
+      WHERE u.username ILIKE ${"%" + query + "%"} 
+      AND u.id != ${currentUserId}
       LIMIT 10;
     `;
+
     return users.rows;
   } catch (error) {
     console.error("Error searching users:", error);

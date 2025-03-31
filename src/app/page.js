@@ -1,4 +1,5 @@
 "use client";
+import { SignInButton, SignUpButton, SignedOut } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -20,15 +21,18 @@ export default function Home() {
           <>
             <h2>Welcome to MChat</h2>
             <p>Sign in to start chatting</p>
-            <Link className="link-button" href="/sign-in">
-              Sign In
-            </Link>
+            <div>
+              <SignedOut>
+                <SignInButton className="button" />
+                <SignUpButton className="button" />
+              </SignedOut>
+            </div>
           </>
         ) : (
           <>
             <h2>Welcome back {user?.username}!</h2>
             <p>You are already signed in.</p>
-            <Link className="link-button" href="/dashboard">
+            <Link className="button" href="/dashboard">
               Go to your Dashboard
             </Link>
           </>

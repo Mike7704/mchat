@@ -33,6 +33,7 @@ export default function SearchBar() {
 
   return (
     <div>
+      <h3>Search for a user</h3>
       <form onSubmit={handleSearch}>
         <input
           type="text"

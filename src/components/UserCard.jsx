@@ -1,8 +1,11 @@
 "use client";
 import { useState } from "react";
+import userCardStyle from "@/styles/user_card.module.css";
 
 export default function UserCard({ user }) {
-  const [requestSent, setRequestSent] = useState(false);
+  const [requestSent, setRequestSent] = useState(user.friendship_status === "pending");
+  const isFriend = user.friendship_status === "accepted";
+  const hasPendingRequest = user.friendship_status === "pending";
 
   const sendFriendRequest = async () => {
     try {
@@ -24,16 +27,22 @@ export default function UserCard({ user }) {
   };
 
   return (
-    <div>
+    <div className={userCardStyle.container}>
       <p>
         <strong>Username:</strong> {user.username}
       </p>
       <p>
         <strong>Email:</strong> {user.email}
       </p>
-      <button onClick={sendFriendRequest} disabled={requestSent}>
-        {requestSent ? "Request Sent" : "Add Friend"}
-      </button>
+      {isFriend ? (
+        <p>Already Friends</p>
+      ) : hasPendingRequest ? (
+        <p>Friend Request Pending</p>
+      ) : (
+        <button onClick={sendFriendRequest} disabled={requestSent}>
+          {requestSent ? "Request Sent" : "Add Friend"}
+        </button>
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import userCardStyle from "@/styles/user_card.module.css";
 
 export default function FriendRequests() {
   const [requests, setRequests] = useState([]);
@@ -50,10 +51,12 @@ export default function FriendRequests() {
     <div>
       <h3>Friend Requests</h3>
       {requests.length === 0 ? (
-        <p>No pending friend requests.</p>
+        <div className={userCardStyle.container}>
+          <p>No pending friend requests.</p>
+        </div>
       ) : (
         requests.map((request) => (
-          <div key={request.id} className="friend-request">
+          <div key={request.id} className={userCardStyle.container}>
             <p>{request.username}</p>
             <button onClick={() => handleAction(request.id, "accept")}>Accept</button>
             <button onClick={() => handleAction(request.id, "reject")}>Reject</button>

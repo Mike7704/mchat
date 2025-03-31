@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import userCardStyle from "@/styles/user_card.module.css";
 
 export default function FriendsList() {
   const [friends, setFriends] = useState([]);
@@ -51,7 +52,7 @@ export default function FriendsList() {
       ) : (
         <ul>
           {friends.map((friend) => (
-            <li key={friend.id}>
+            <li key={friend.id} className={userCardStyle.container}>
               {friend.username}
               <button onClick={() => handleRemoveFriend(friend.id)}>Remove Friend</button>
             </li>
