@@ -161,3 +161,21 @@ export async function removeFriend(userId, friendId) {
     throw new Error("Error removing friend");
   }
 }
+
+// Fetch messages between two users
+export async function fetchMessages(userId, friendId) {
+  return await sql`
+    SELECT * FROM messages_mchat 
+    WHERE (sender_id = ${userId} AND receiver_id = ${friendId}) 
+       OR (sender_id = ${friendId} AND receiver_id = ${userId}) 
+    ORDER BY created_at ASC;
+  `;
+}
+
+// Save a new message
+export async function saveMessage(senderId, receiverId, message) {
+  return await sql`
+    INSERT INTO messages_mchat (sender_id, receiver_id, message) 
+    VALUES (${senderId}, ${receiverId}, ${message});
+  `;
+}

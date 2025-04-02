@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import userCardStyle from "@/styles/user_card.module.css";
 
 export default function FriendsList() {
@@ -54,6 +55,9 @@ export default function FriendsList() {
           {friends.map((friend) => (
             <li key={friend.id} className={userCardStyle.container}>
               {friend.username}
+              <Link href={`/chat/${friend.id}?username=${friend.username}`} className="button">
+                Message
+              </Link>
               <button onClick={() => handleRemoveFriend(friend.id)}>Remove Friend</button>
             </li>
           ))}
