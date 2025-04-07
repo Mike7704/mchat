@@ -7,12 +7,21 @@ export default function Profile() {
   const { user } = useUser();
 
   return (
-    <div className={profileStyle.container}>
+    <div className="sub-container">
       {user?.imageUrl && (
-        <Image src={user.imageUrl} alt="Profile Picture" width={100} height={100} className="profile-pic" />
+        <Image
+          src={user.imageUrl}
+          alt="Profile Picture"
+          width={80}
+          height={80}
+          className={profileStyle["profile-pic"]}
+        />
       )}
-      <h3>Username: {user?.username}</h3>
-      <p>Email: {user?.primaryEmailAddress?.emailAddress}</p>
+      <div className={profileStyle["profile-info"]}>
+        <h3>{user?.username}</h3>
+        <p>Email: {user?.primaryEmailAddress?.emailAddress}</p>
+        <p>Friends: 0</p>
+      </div>
     </div>
   );
 }

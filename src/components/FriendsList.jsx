@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import userCardStyle from "@/styles/user_card.module.css";
 
 export default function FriendsList() {
   const [friends, setFriends] = useState([]);
@@ -46,14 +45,14 @@ export default function FriendsList() {
   if (loading) return <p>Loading friends...</p>;
 
   return (
-    <div>
+    <div className="component-container">
       <h3>Friends List</h3>
       {friends.length === 0 ? (
         <p>No friends found.</p>
       ) : (
         <ul>
           {friends.map((friend) => (
-            <li key={friend.id} className={userCardStyle.container}>
+            <li key={friend.id} className="sub-container">
               {friend.username}
               <Link href={`/chat/${friend.id}?username=${friend.username}`} className="button">
                 Message

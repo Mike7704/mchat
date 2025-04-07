@@ -61,7 +61,7 @@ export default function Chat() {
   };
 
   return (
-    <div>
+    <main>
       <h3>{username} Chat</h3>
       <div>
         {messages.map((msg, index) => (
@@ -72,6 +72,6 @@ export default function Chat() {
       </div>
       <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
       <button onClick={sendMessage}>Send</button>
-    </div>
+    </main>
   );
 }

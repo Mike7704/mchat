@@ -1,0 +1,12 @@
+.profile-pic {
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+}

@@ -1,0 +1,17 @@
+.search-form {
+  display: flex;
+  gap: 1rem;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 2rem;
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

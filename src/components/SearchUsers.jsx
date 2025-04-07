@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import UserCard from "@/components/UserCard";
+import searchUsersStyle from "@/styles/search_users.module.css";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");
@@ -32,25 +33,26 @@ export default function SearchBar() {
   };
 
   return (
-    <div>
-      <h3>Search for a user</h3>
-      <form onSubmit={handleSearch}>
+    <div className="component-container">
+      <form onSubmit={handleSearch} className={searchUsersStyle["search-form"]}>
         <input
           type="text"
           placeholder="Search for a user..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          className={searchUsersStyle["search-input"]}
         />
         <button type="submit" disabled={searching}>
           {searching ? "Searching..." : "Search"}
         </button>
       </form>
-
-      <div>
-        {searching && <p>Searching...</p>}
-        {!searching && results.length > 0 && results.map((user) => <UserCard key={user.id} user={user} />)}
-        {!searching && results.length === 0 && hasSearched && <p>No users found.</p>}
-      </div>
+      {hasSearched && (
+        <div className={searchUsersStyle["search-results"]}>
+          {searching && <p className="sub-container">Searching...</p>}
+          {!searching && results.length > 0 && results.map((user) => <UserCard key={user.id} user={user} />)}
+          {!searching && results.length === 0 && <p className="sub-container">No users found.</p>}
+        </div>
+      )}
     </div>
   );
 }
