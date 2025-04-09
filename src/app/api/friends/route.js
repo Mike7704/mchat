@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getFriends, removeFriend } from "@/utils/user-database";
 import { getAuth } from "@clerk/nextjs/server";
+import { getUsersWithProfilePicture } from "@/utils/clerkProfilePicture";
 
 export async function GET(req) {
   try {
@@ -10,8 +11,11 @@ export async function GET(req) {
       return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
     }
 
+    // Fetch friends from the database
     const friends = await getFriends(userId);
-    return NextResponse.json(friends.rows);
+    const friendsWithProfilePicture = await getUsersWithProfilePicture(friends.rows);
+
+    return NextResponse.json(friendsWithProfilePicture);
   } catch (error) {
     return NextResponse.json({ error: "Database error" }, { status: 500 });
   }

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function FriendRequests() {
   const [requests, setRequests] = useState([]);
@@ -56,6 +57,13 @@ export default function FriendRequests() {
       ) : (
         requests.map((request) => (
           <div key={request.id} className="sub-container">
+            <Image
+              src={request.profileImage || "/default-avatar.png"}
+              alt={`${request.username}'s profile`}
+              width={36}
+              height={36}
+              className="profile-pic-small"
+            />
             <p>{request.username}</p>
             <button onClick={() => handleAction(request.id, "accept")}>Accept</button>
             <button onClick={() => handleAction(request.id, "reject")}>Reject</button>

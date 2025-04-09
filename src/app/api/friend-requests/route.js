@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { sendFriendRequest, getFriendRequests, updateFriendRequest } from "@/utils/user-database";
 import { getAuth } from "@clerk/nextjs/server";
+import { getUsersWithProfilePicture } from "@/utils/clerkProfilePicture";
 
 export async function POST(req) {
   try {
@@ -26,7 +27,9 @@ export async function GET(req) {
     }
 
     const requests = await getFriendRequests(userId);
-    return NextResponse.json(requests);
+    const usersWithProfilePicture = await getUsersWithProfilePicture(requests);
+
+    return NextResponse.json(usersWithProfilePicture);
   } catch (error) {
     return NextResponse.json({ error: "Database error" }, { status: 500 });
   }

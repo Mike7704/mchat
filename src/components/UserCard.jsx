@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function UserCard({ user }) {
   const [requestSent, setRequestSent] = useState(user.friendship_status === "pending");
@@ -27,9 +28,14 @@ export default function UserCard({ user }) {
 
   return (
     <div className="sub-container">
-      <p>
-        <strong>Username:</strong> {user.username}
-      </p>
+      <Image
+        src={user.profileImage || "/default-avatar.png"}
+        alt={`${user.username}'s profile`}
+        width={36}
+        height={36}
+        className="profile-pic-small"
+      />
+      <p>{user.username}</p>
       {isFriend ? (
         <p>Already Friends</p>
       ) : hasPendingRequest ? (

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function FriendsList() {
   const [friends, setFriends] = useState([]);
@@ -53,7 +54,14 @@ export default function FriendsList() {
         <ul>
           {friends.map((friend) => (
             <li key={friend.id} className="sub-container">
-              {friend.username}
+              <Image
+                src={friend.profileImage || "/default-avatar.png"}
+                alt={`${friend.username}'s profile`}
+                width={36}
+                height={36}
+                className="profile-pic-small"
+              />
+              <p>{friend.username}</p>
               <Link href={`/chat/${friend.id}?username=${friend.username}`} className="button">
                 Message
               </Link>
