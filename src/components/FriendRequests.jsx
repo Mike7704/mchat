@@ -15,7 +15,7 @@ export default function FriendRequests() {
       const response = await fetch("/api/friend-requests");
       const data = await response.json();
       if (response.ok) {
-        setRequests(data.rows);
+        setRequests(data);
       } else {
         console.error("Error fetching friend requests:", data.error);
       }

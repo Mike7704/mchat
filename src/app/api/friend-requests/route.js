@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { sendFriendRequest, getFriendRequests, updateFriendRequest } from "@/utils/user-database";
 import { getAuth } from "@clerk/nextjs/server";
-import { getUsersWithProfilePicture } from "@/utils/clerkProfilePicture";
+import { getFriendRequestsWithProfilePicture } from "@/utils/clerkProfilePicture";
 
 export async function POST(req) {
   try {
@@ -27,7 +27,7 @@ export async function GET(req) {
     }
 
     const requests = await getFriendRequests(userId);
-    const usersWithProfilePicture = await getUsersWithProfilePicture(requests);
+    const usersWithProfilePicture = await getFriendRequestsWithProfilePicture(requests.rows);
 
     return NextResponse.json(usersWithProfilePicture);
   } catch (error) {

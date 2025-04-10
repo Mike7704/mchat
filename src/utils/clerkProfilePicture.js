@@ -27,3 +27,17 @@ export async function getUsersWithProfilePicture(users) {
     }))
   );
 }
+
+// Get Clerk profile image for each friend request
+export async function getFriendRequestsWithProfilePicture(users) {
+  if (!Array.isArray(users) || users.length === 0) {
+    return users;
+  }
+
+  return await Promise.all(
+    users.map(async (user) => ({
+      ...user,
+      profileImage: await getClerkProfilePictureURL(user.sender_id),
+    }))
+  );
+}
