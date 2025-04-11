@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <main>
       {!isSignedIn ? (
-        <>
+        <div className="vertical-sub-container">
           <h2>Welcome to MChat</h2>
           <p>Sign in to start chatting</p>
           <div>
@@ -23,15 +23,15 @@ export default function Home() {
               <SignUpButton className="button" />
             </SignedOut>
           </div>
-        </>
+        </div>
       ) : (
-        <>
+        <div className="vertical-sub-container">
           <h2>Welcome back {user?.username}!</h2>
           <p>You are already signed in.</p>
           <Link className="button" href="/dashboard">
             Go to your Dashboard
           </Link>
-        </>
+        </div>
       )}
     </main>
   );

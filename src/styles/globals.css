@@ -44,6 +44,16 @@ button,
   padding: 1rem;
 }
 
+.vertical-sub-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgb(50, 50, 50);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
 .profile-pic-small {
   border-radius: 50%;
   object-fit: cover;

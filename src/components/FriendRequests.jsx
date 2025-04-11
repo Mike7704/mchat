@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { fetchProfilePicture } from "@/utils/fetchProfilePicture";
 
 export default function FriendRequests() {
   const [requests, setRequests] = useState([]);
@@ -14,8 +15,17 @@ export default function FriendRequests() {
     try {
       const response = await fetch("/api/friend-requests");
       const data = await response.json();
+
+      // Fetch profile images for each friend request
+      const requestsWithProfileImages = await Promise.all(
+        data.map(async (request) => {
+          const profileImage = await fetchProfilePicture(request.sender_id);
+          return { ...request, profileImage };
+        })
+      );
+
       if (response.ok) {
-        setRequests(data);
+        setRequests(requestsWithProfileImages);
       } else {
         console.error("Error fetching friend requests:", data.error);
       }

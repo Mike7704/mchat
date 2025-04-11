@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+}
+
+.user-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgb(50, 50, 50);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.chat-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: end;
+  gap: 0.5rem;
+  background-color: rgb(50, 50, 50);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.message-container {
+  display: flex;
+  background-color: rgb(40, 40, 40);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  max-width: 90%;
+  word-wrap: break-word;
+}
+.sender {
+  align-self: flex-end;
+}
+.receiver {
+  align-self: flex-start;
+}
+
+.search-form {
+  display: flex;
+  gap: 1rem;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 2rem;
+}

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { fetchProfilePicture } from "@/utils/fetchProfilePicture";
 
 export default function FriendsList() {
   const [friends, setFriends] = useState([]);
@@ -15,7 +16,16 @@ export default function FriendsList() {
     try {
       const response = await fetch("/api/friends");
       const data = await response.json();
-      setFriends(data);
+
+      // Fetch profile images for each friend
+      const friendsWithProfileImages = await Promise.all(
+        data.map(async (friend) => {
+          const profileImage = await fetchProfilePicture(friend.id);
+          return { ...friend, profileImage };
+        })
+      );
+
+      setFriends(friendsWithProfileImages);
     } catch (error) {
       console.error("Error fetching friends:", error);
     } finally {

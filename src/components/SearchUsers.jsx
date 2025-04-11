@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import UserCard from "@/components/UserCard";
+import { fetchProfilePicture } from "@/utils/fetchProfilePicture";
 import searchUsersStyle from "@/styles/search_users.module.css";
 
 export default function SearchBar() {
@@ -20,8 +21,16 @@ export default function SearchBar() {
       const response = await fetch(`/api/search-users?query=${query}`);
       const data = await response.json();
 
+      // Fetch profile images for each user
+      const usersWithProfileImages = await Promise.all(
+        data.map(async (user) => {
+          const profileImage = await fetchProfilePicture(user.id);
+          return { ...user, profileImage };
+        })
+      );
+
       if (response.ok) {
-        setResults(data);
+        setResults(usersWithProfileImages);
       } else {
         console.error("Error fetching users:", data.error);
       }

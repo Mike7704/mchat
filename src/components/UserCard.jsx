@@ -37,9 +37,9 @@ export default function UserCard({ user }) {
       />
       <p>{user.username}</p>
       {isFriend ? (
-        <p>Already Friends</p>
+        <p className="button">Already Friends</p>
       ) : hasPendingRequest ? (
-        <p>Friend Request Pending</p>
+        <p className="button">Friend Request Pending</p>
       ) : (
         <button onClick={sendFriendRequest} disabled={requestSent}>
           {requestSent ? "Request Sent" : "Add Friend"}

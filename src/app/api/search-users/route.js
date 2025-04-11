@@ -1,7 +1,6 @@
 import { searchUsers } from "@/utils/user-database";
 import { NextResponse } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
-import { getUsersWithProfilePicture } from "@/utils/clerkProfilePicture";
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
@@ -19,9 +18,8 @@ export async function GET(req) {
   try {
     // Find users, excluding the current user
     const users = await searchUsers(query, userId);
-    const usersWithProfilePicture = await getUsersWithProfilePicture(users);
 
-    return NextResponse.json(usersWithProfilePicture);
+    return NextResponse.json(users);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
