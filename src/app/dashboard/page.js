@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Profile from "@/components/Profile";
 import SearchUsers from "@/components/SearchUsers";
 import FriendRequests from "@/components/FriendRequests";
@@ -11,6 +12,9 @@ export default function Dashboard() {
       <SearchUsers />
       <FriendRequests />
       <FriendsList />
+      <Link className="button" href="/chatbot">
+        ChatBot
+      </Link>
     </main>
   );
 }

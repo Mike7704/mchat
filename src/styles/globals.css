@@ -29,6 +29,11 @@ button,
   min-width: max-content;
 }
 
+.link-button {
+  text-decoration: none;
+  color: inherit;
+}
+
 .component-container {
   display: flex;
   flex-direction: column;
