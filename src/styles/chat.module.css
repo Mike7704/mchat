@@ -3,6 +3,7 @@
   flex: 1;
   flex-direction: column;
   height: 100%;
+  max-height: 87vh;
 }
 
 .user-container {
@@ -18,15 +19,17 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  justify-content: end;
   gap: 0.5rem;
   background-color: rgb(50, 50, 50);
   border-radius: 0.5rem;
   padding: 1rem;
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
 .message-container {
   display: flex;
+  align-items: center;
   background-color: rgb(40, 40, 40);
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
@@ -38,6 +41,15 @@
 }
 .receiver {
   align-self: flex-start;
+}
+.message-time {
+  font-size: 0.8rem;
+  color: grey;
+  margin-left: 1rem;
+  display: none;
+}
+.message-container:hover .message-time {
+  display: block;
 }
 
 .search-form {

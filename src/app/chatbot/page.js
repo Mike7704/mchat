@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import chatStyle from "@/styles/chat.module.css";
 
@@ -7,6 +7,7 @@ export default function ChatBot() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [sendingMessage, setSendingMessage] = useState(false);
+  const messagesEndRef = useRef(null);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -39,6 +40,13 @@ export default function ChatBot() {
     }
   };
 
+  // Scroll to the bottom when new messages are added
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   return (
     <main className={chatStyle["container"]}>
       <div className={chatStyle["user-container"]}>
@@ -54,11 +62,12 @@ export default function ChatBot() {
             key={index}
           >
             <p>
-              <strong>{msg.role === "user" ? "You" : "Chaty"}:</strong> {msg.content}
+              {msg.role === "user" ? "You" : "Chaty"}:<strong> {msg.content}</strong>
             </p>
           </div>
         ))}
         {sendingMessage && <p className={chatStyle["receiver"]}>Chaty is thinking...</p>}
+        <div ref={messagesEndRef} />
       </div>
       <form onSubmit={sendMessage} className={chatStyle["search-form"]}>
         <input

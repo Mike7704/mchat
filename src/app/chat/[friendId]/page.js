@@ -1,10 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { fetchProfilePicture } from "@/utils/fetchProfilePicture";
+import Pusher from "pusher-js";
 import chatStyle from "@/styles/chat.module.css";
 
 export default function Chat() {
@@ -15,6 +16,7 @@ export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [sendingMessage, setSendingMessage] = useState(false);
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     if (!isLoaded) return; // Wait for auth to load
@@ -49,34 +51,67 @@ export default function Chat() {
 
     if (!newMessage.trim()) return;
 
-    const messageData = {
-      sender_id: userId,
-      receiver_id: friendId,
-      message: newMessage,
-      created_at: new Date().toISOString(),
-    };
-
     setSendingMessage(true);
 
     try {
-      const response = await fetch("/api/messages", {
+      await fetch("/api/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ receiver_id: friendId, message: newMessage }),
       });
 
-      if (response.ok) {
-        setMessages((prev) => [...prev, messageData]);
-        setNewMessage("");
-      } else {
-        console.error("Failed to send message");
-      }
+      setNewMessage(""); // Just clear the input
     } catch (error) {
       console.error("Error sending message:", error);
     } finally {
       setSendingMessage(false);
     }
   };
+
+  // Listen for new messages using Pusher
+  useEffect(() => {
+    if (!isLoaded || !userId || !friendId) return;
+
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+    });
+
+    const channel = pusher.subscribe("chat");
+
+    channel.bind("message", (data) => {
+      const isBetweenUsers =
+        (data.sender_id === userId && data.receiver_id === friendId) ||
+        (data.sender_id === friendId && data.receiver_id === userId);
+
+      if (isBetweenUsers) {
+        setMessages((prev) => [...prev, data]);
+      }
+    });
+
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+    };
+  }, [isLoaded, userId, friendId]);
+
+  const formatDateTime = (timestamp) => {
+    const date = new Date(timestamp);
+    const dateStr = date.toLocaleDateString([], {
+      weekday: "short",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+    const timeStr = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return `${dateStr} at ${timeStr}`;
+  };
+
+  // Scroll to the bottom when new messages are added
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   return (
     <main className={chatStyle["container"]}>
@@ -99,10 +134,12 @@ export default function Chat() {
             key={index}
           >
             <p>
-              <strong>{msg.sender_id === userId ? "You" : username}:</strong> {msg.message}
+              {msg.sender_id === userId ? "You" : username}:<strong> {msg.message}</strong>
             </p>
+            <p className={chatStyle["message-time"]}>{formatDateTime(msg.created_at)}</p>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
       <form onSubmit={sendMessage} className={chatStyle["search-form"]}>
         <input
