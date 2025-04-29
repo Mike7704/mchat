@@ -10,6 +10,7 @@ export default function SearchBar() {
   const [searching, setSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
+  // Search for users
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;
@@ -25,7 +26,7 @@ export default function SearchBar() {
       const usersWithProfileImages = await Promise.all(
         data.map(async (user) => {
           const profileImage = await fetchProfilePicture(user.id);
-          return { ...user, profileImage };
+          return { ...user, profileImage }; // Add profile image
         })
       );
 
@@ -55,6 +56,7 @@ export default function SearchBar() {
           {searching ? "Searching..." : "Search"}
         </button>
       </form>
+      {/* Display search results */}
       {hasSearched && (
         <div className={searchUsersStyle["search-results"]}>
           {searching && <p className="sub-container">Searching...</p>}

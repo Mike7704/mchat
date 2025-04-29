@@ -20,7 +20,6 @@ export default function Profile() {
       <div className={profileStyle["profile-info"]}>
         <h3>{user?.username}</h3>
         <p>Email: {user?.primaryEmailAddress?.emailAddress}</p>
-        <p>Friends: 0</p>
       </div>
     </div>
   );

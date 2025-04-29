@@ -7,10 +7,12 @@ export default function FriendRequests() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Fetch friend requests when the component mounts
   useEffect(() => {
     fetchFriendRequests();
   }, []);
 
+  // Fetch friend requests from the API
   const fetchFriendRequests = async () => {
     try {
       const response = await fetch("/api/friend-requests");
@@ -20,7 +22,7 @@ export default function FriendRequests() {
       const requestsWithProfileImages = await Promise.all(
         data.map(async (request) => {
           const profileImage = await fetchProfilePicture(request.sender_id);
-          return { ...request, profileImage };
+          return { ...request, profileImage }; // Add the profile image
         })
       );
 
@@ -36,6 +38,7 @@ export default function FriendRequests() {
     }
   };
 
+  // Handle accept/reject actions for friend requests
   const handleAction = async (requestId, action) => {
     try {
       const response = await fetch("/api/friend-requests", {
@@ -55,6 +58,7 @@ export default function FriendRequests() {
     }
   };
 
+  // Show loading message while requests are being fetched
   if (loading) return <p>Loading friend requests...</p>;
 
   return (

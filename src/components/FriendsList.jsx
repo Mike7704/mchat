@@ -8,10 +8,12 @@ export default function FriendsList() {
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Fetch friends when the component mounts
   useEffect(() => {
     fetchFriends();
   }, []);
 
+  // Fetch friends from the API
   const fetchFriends = async () => {
     try {
       const response = await fetch("/api/friends");
@@ -21,7 +23,7 @@ export default function FriendsList() {
       const friendsWithProfileImages = await Promise.all(
         data.map(async (friend) => {
           const profileImage = await fetchProfilePicture(friend.id);
-          return { ...friend, profileImage };
+          return { ...friend, profileImage }; // Add profile image
         })
       );
 
@@ -33,14 +35,16 @@ export default function FriendsList() {
     }
   };
 
+  // Handle removing a friend
   const handleRemoveFriend = async (friendId) => {
+    // Confirm the removal action with the user
     if (!confirm("Are you sure you want to remove this friend?")) return;
 
     try {
       const response = await fetch("/api/friends", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ friendId }),
+        body: JSON.stringify({ friendId }), // Send the friend's ID to be removed
       });
 
       if (response.ok) {
@@ -53,6 +57,7 @@ export default function FriendsList() {
     }
   };
 
+  // Show loading message while friends are being fetched
   if (loading) return <p>Loading friends...</p>;
 
   return (
